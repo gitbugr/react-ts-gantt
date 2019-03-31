@@ -1,0 +1,20 @@
+.gantt__row {
+    font-family: 'Helvetica Neue';
+    font-weight: bold;
+    font-size: 9pt;
+    color: white;
+    height: 36px;
+    width: 100%;
+    padding: 3px;
+    margin: 2px 0px;
+    display: inline-flex;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    &:active {
+        cursor: grabbing;
+    }
+}
+

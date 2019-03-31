@@ -1,0 +1,70 @@
+.gantt__block {
+    font-family: 'Helvetica Neue';
+    font-weight: 500;
+    font-size: 9pt;
+    letter-spacing: 0.75px;
+    color: white;
+    height: 30px;
+    min-width: 30px;
+    display: inline-flex;
+    justify-content: space-around;
+    background-color: rgb(225, 50, 50);
+    box-sizing: border-box;
+    user-select: none;
+    overflow: hidden;
+    border-radius: 15px;
+    position: absolute;
+    &.gantt__block--overlay {
+        position: absolute;
+        z-index: 20;
+        background-color: #52e7ff;
+        mix-blend-mode: hue;
+        &:hover {
+            mix-blend-mode: difference;
+        }
+        .gantt__block-anchor {
+            display: none;
+        }
+    }
+    .gantt__block-content {
+        height: 100%;
+        width: 100%;
+        padding: 0px 10px;
+        display: flex;
+        align-items: center;
+        border-radius: 15px;
+        justify-content: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        &:hover {
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+    .gantt__block-anchor {
+        display: none;
+    }
+
+    /*
+     *  Modifier: editable
+     *  Description: makes gantt block draggable
+     */
+    &.gantt__block--editable {
+        .gantt__block-content {
+            width: calc(100% - 30px);
+            &:active {
+                cursor: grabbing;
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+        .gantt__block-anchor {
+            height: 100%;
+            width: 15px;
+            border-radius: 15px;
+            display: block;
+            cursor: col-resize;
+        }
+    }
+}
+

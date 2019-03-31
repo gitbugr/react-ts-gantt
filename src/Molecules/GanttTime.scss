@@ -1,0 +1,19 @@
+.gantt__timeline-time {
+    width: 100px;
+    margin-left: -50px;
+    display: flex;
+    height: 50px;
+    align-items: center;
+    font-family: 'Helvetica Neue';
+    font-size: 9pt;
+    justify-content: center;
+    position: absolute;
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0px;
+        height: 5px;
+        width: 1px;
+        background: black;
+    }
+}
