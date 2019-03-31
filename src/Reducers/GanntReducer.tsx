@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4';
 
 /// <reference path="../Namespaces/Gantt.ts" />
 type State = {
-    position: Date;
+    dateCursor: Date;
     pixelsPerMinute: number;
     segment: number;
     snapToSecond: number;
@@ -20,7 +20,7 @@ let rowUuid1 = uuidv4();
 let rowUuid2 = uuidv4();
 // default gantt state
 export const defaultGanttState = {
-    position: (new Date((new Date()).getTime() - (1000*60*60*2))), // now - 1hr
+    dateCursor: (new Date((new Date()).getTime() - (1000*60*60*2))), // now - 1hr
     pixelsPerMinute: 1.3,
     segment: 60,
     snapToSecond: 60,
@@ -88,7 +88,7 @@ export const ganttReducer = (state: State, action: Action) => {
             newState.rows[row].blocks[block] = action.value;
             break;
         case 'UPDATE_GANTT_POSITION':
-            newState.position = action.value;
+            newState.dateCursor = action.value;
             break;
         case 'DELETE_GANTT_ROW':
             row = findByUuid(state.rows, action.value.uuid, true);

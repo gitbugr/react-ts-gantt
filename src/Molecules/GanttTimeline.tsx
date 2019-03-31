@@ -29,13 +29,13 @@ function GanttTimeline(): JSX.Element
         const pixelsPerSecond = 60000 / ganttState.pixelsPerMinute;
         if (currentTimeline) {
             const minutesInView = currentTimeline.clientWidth / ganttState.pixelsPerMinute;
-            const maxDate = new Date(ganttState.position.getTime() + (minutesInView * 60000));
-            let dateCursor = new Date(ganttState.position.getTime());
+            const maxDate = new Date(ganttState.dateCursor.getTime() + (minutesInView * 60000));
+            let dateCursor = new Date(ganttState.dateCursor.getTime());
                 dateCursor.setMinutes(ganttState.segment * Math.round(dateCursor.getMinutes() / ganttState.segment));
                 dateCursor.setSeconds(0);
                 dateCursor.setMilliseconds(0);
             while (dateCursor.getTime() < maxDate.getTime()) {
-                let leftPos = dateCursor.getTime() - ganttState.position.getTime();
+                let leftPos = dateCursor.getTime() - ganttState.dateCursor.getTime();
                     leftPos = leftPos / pixelsPerSecond;
                 newTimePositions.push({
                     date: new Date(dateCursor.getTime()),
@@ -56,7 +56,7 @@ function GanttTimeline(): JSX.Element
         return () => {
             window.removeEventListener('resize', updateViewableTimes);
         };
-    }, [ganttState.position, ganttState.segment, ganttState.pixelsPerMinute]);
+    }, [ganttState.dateCursor, ganttState.segment, ganttState.pixelsPerMinute]);
 
     /**
      * filterGanttDates
