@@ -16,7 +16,7 @@ interface GanttTimeProps {
 function GanttTime(props: GanttTimeProps): JSX.Element
 {
     return (
-        <div className="gantt__timeline-time" style={{left: props.leftPos}}>{ moment(props.date).format(props.format || 'h:mm') }</div>
+        <div className="gantt__timeline-time" style={{left: props.leftPos}}>{ moment(props.date).format(props.format || 'h:mma') }</div>
     );
 }
 

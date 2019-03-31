@@ -3,4 +3,11 @@
     overflow: hidden;
     position: relative;
     opacity: 0.4;
+    &.gantt__timeline--dates {
+        height: 50px;
+        font-weight: bold;
+        .gantt__timeline-time {
+            height: 50px;
+        }
+    }
 }

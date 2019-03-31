@@ -6,6 +6,7 @@ import uuidv4 from 'uuid/v4';
 type State = {
     position: Date;
     pixelsPerMinute: number;
+    segment: number;
     snapToSecond: number;
     rows: Gantt.Row[];
 }
@@ -20,7 +21,8 @@ let rowUuid2 = uuidv4();
 // default gantt state
 export const defaultGanttState = {
     position: (new Date((new Date()).getTime() - (1000*60*60*2))), // now - 1hr
-    pixelsPerMinute: 5,
+    pixelsPerMinute: 1.3,
+    segment: 60,
     snapToSecond: 60,
     rows: [
         {
@@ -30,22 +32,22 @@ export const defaultGanttState = {
                     uuid: uuidv4(),
                     row: rowUuid1,
                     text: '[HERE]',
-                    start: new Date(new Date().getTime() - (1000*60*30)),
-                    end: new Date(new Date().getTime() - (1000*60*10)),
+                    start: new Date(new Date().getTime() - (1000*60*60*6)),
+                    end: new Date(new Date().getTime() - (1000*60*60*2)),
                 },
                 {
                     uuid: uuidv4(),
                     row: rowUuid1,
                     text: 'Parliament',
                     start: new Date(),
-                    end: new Date(new Date().getTime() + (1000*60*40)),
+                    end: new Date(new Date().getTime() + (1000*60*60*3)),
                 },
                 {
                     uuid: uuidv4(),
                     row: rowUuid1,
                     overlay: true,
-                    start: new Date(new Date().getTime() + (1000*60*3)),
-                    end: new Date(new Date().getTime() + (1000*60*30)),
+                    start: new Date(new Date().getTime() + (1000*60*60)),
+                    end: new Date(new Date().getTime() + (1000*60*60*4)),
                 },
             ],
         },
@@ -56,8 +58,8 @@ export const defaultGanttState = {
                     uuid: uuidv4(),
                     row: rowUuid2,
                     text: 'Starbucks',
-                    start: new Date(new Date().getTime() - (1000*60*60)),
-                    end: new Date(new Date().getTime() - (1000*60*20)),
+                    start: new Date(new Date().getTime() - (1000*60*60*3)),
+                    end: new Date(new Date().getTime() - (1000*60*60)),
                 },
             ],
         },

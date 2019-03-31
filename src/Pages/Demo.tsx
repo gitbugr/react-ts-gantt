@@ -2,7 +2,11 @@ import React, { useState, useReducer, useEffect } from 'react';
 import Gantt from '../Organisms/Gantt';
 import { GanttContext, defaultGanttState, ganttReducer } from '../Reducers/GanntReducer';
 
-function Demo(): JSX.Element
+/**
+ * AwesomePage
+ * @returns {JSX.Element}
+ */
+function AwesomePage(): JSX.Element
 {
     const [ganttState, ganttDispatch] = useReducer(ganttReducer, defaultGanttState);
     return (
@@ -12,5 +16,5 @@ function Demo(): JSX.Element
     );
 }
 
-export default Demo;
+export default AwesomePage;
 

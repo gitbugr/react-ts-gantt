@@ -23,31 +23,15 @@ function GanttTimeline(): JSX.Element
     const timelineEl = useRef(null);
     const [timePositions, setTimePositions] = useState([] as TimeAndPosition[]);
 
-    // high-performance rounding
-    function roundToQuarter(date: Date): Date
-    {
-        const minutes = date.getMinutes();
-        if (minutes <= 7 || minutes >= 53) {
-            date.setMinutes(0);
-        } else if (minutes <= 22) {
-            date.setMinutes(15);
-        } else if (minutes <= 37) {
-            date.setMinutes(30);
-        } else {
-            date.setMinutes(45);
-        }
-        return date;
-    }
-
     const updateViewableTimes = throttle(15, () => {
         const newTimePositions:TimeAndPosition[] = [];
         const currentTimeline: any = timelineEl.current;
         const pixelsPerSecond = 60000 / ganttState.pixelsPerMinute;
         if (currentTimeline) {
             const minutesInView = currentTimeline.clientWidth / ganttState.pixelsPerMinute;
-            const maxDate = new Date(ganttState.position.getTime() + (minutesInView * 60000));
+            const maxDate = new Date(ganttState.position.getTime() + (minutesInView * 60000) + 1800000);
             let dateCursor = new Date(ganttState.position.getTime() - 1800000);
-                dateCursor.setTime(roundToQuarter(dateCursor).getTime());
+                dateCursor.setMinutes(ganttState.segment * Math.round(dateCursor.getMinutes() / ganttState.segment));
                 dateCursor.setSeconds(0);
                 dateCursor.setMilliseconds(0);
             while (dateCursor.getTime() < maxDate.getTime()) {
@@ -57,7 +41,7 @@ function GanttTimeline(): JSX.Element
                     date: new Date(dateCursor.getTime()),
                     leftPos: leftPos,
                 });
-                dateCursor.setTime(dateCursor.getTime() + 900000);
+                dateCursor.setTime(dateCursor.getTime() + (ganttState.segment * 60 * 1000));
             }
             setTimePositions(newTimePositions);
         }
@@ -76,12 +60,12 @@ function GanttTimeline(): JSX.Element
 
     return (
         <div>
-            <div ref={timelineEl} className="gantt__timeline">
+            <div ref={timelineEl} className="gantt__timeline gantt__timeline--dates">
                 {
                     timePositions.filter(({date}) => {
                         return date.getHours() + date.getMinutes() === 0;
                     }).map(({date, leftPos}, i) => {
-                        <GanttTime key={i} date={date} leftPos={leftPos} format="MMMM Do YYYY"/>
+                        return <GanttTime key={i + 0.1} date={date} leftPos={leftPos} format="MMMM Do YYYY" />
                     })
                 }
             </div>
