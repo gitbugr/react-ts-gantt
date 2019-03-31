@@ -10,9 +10,13 @@ function AwesomePage(): JSX.Element
 {
     const [ganttState, ganttDispatch] = useReducer(ganttReducer, defaultGanttState);
     return (
-        <GanttContext.Provider value={{ganttState, ganttDispatch}}>
-            <Gantt />
-        </GanttContext.Provider>
+        <div>
+            <button onClick={ganttDispatch.bind(null, {type:'ZOOM_GANTT_IN'})}>+</button>
+            <button onClick={ganttDispatch.bind(null, {type:'ZOOM_GANTT_OUT'})}>-</button>
+            <GanttContext.Provider value={{ganttState, ganttDispatch}}>
+                <Gantt />
+            </GanttContext.Provider>
+        </div>
     );
 }
 

@@ -99,6 +99,14 @@ export const ganttReducer = (state: State, action: Action) => {
             block = findByUuid(state.rows[row].blocks, action.value.uuid, true);
             delete newState.rows[row].blocks[block];
             break;
+        case 'ZOOM_GANTT_IN':
+            newState.segment += 5;
+            newState.pixelsPerMinute += 12 / 78;
+            break;
+        case 'ZOOM_GANTT_OUT':
+            newState.segment -= 5;
+            newState.pixelsPerMinute -= 12 / 78;
+            break;
         default:
             throw new Error();
     }

@@ -29,8 +29,8 @@ function GanttTimeline(): JSX.Element
         const pixelsPerSecond = 60000 / ganttState.pixelsPerMinute;
         if (currentTimeline) {
             const minutesInView = currentTimeline.clientWidth / ganttState.pixelsPerMinute;
-            const maxDate = new Date(ganttState.position.getTime() + (minutesInView * 60000) + 1800000);
-            let dateCursor = new Date(ganttState.position.getTime() - 1800000);
+            const maxDate = new Date(ganttState.position.getTime() + (minutesInView * 60000));
+            let dateCursor = new Date(ganttState.position.getTime());
                 dateCursor.setMinutes(ganttState.segment * Math.round(dateCursor.getMinutes() / ganttState.segment));
                 dateCursor.setSeconds(0);
                 dateCursor.setMilliseconds(0);
@@ -56,16 +56,36 @@ function GanttTimeline(): JSX.Element
         return () => {
             window.removeEventListener('resize', updateViewableTimes);
         };
-    }, [ganttState.position]);
+    }, [ganttState.position, ganttState.segment, ganttState.pixelsPerMinute]);
+
+    /**
+     * filterGanttDates
+     * @param {TimeAndPosition[]} array
+     * @returns {TimeAndPosition[]}
+     */
+    function filterGanttDates(array: TimeAndPosition[]): TimeAndPosition[]
+    {
+        let lastDate: any = null;
+        return array.filter(({date, leftPos}) => {
+            if (
+                (!lastDate || !(
+                    date.getDate() == lastDate.getDate() &&
+                    date.getMonth() == lastDate.getMonth() &&
+                    date.getFullYear() == lastDate.getFullYear()
+                )) && leftPos > 50
+            ) {
+                lastDate = new Date(date.getTime());
+                return true;
+            }
+        });
+    }
 
     return (
         <div>
             <div ref={timelineEl} className="gantt__timeline gantt__timeline--dates">
                 {
-                    timePositions.filter(({date}) => {
-                        return date.getHours() + date.getMinutes() === 0;
-                    }).map(({date, leftPos}, i) => {
-                        return <GanttTime key={i + 0.1} date={date} leftPos={leftPos} format="MMMM Do YYYY" />
+                    filterGanttDates(timePositions).map(({date, leftPos}, i) => {
+                        return <GanttTime key={i} date={date} leftPos={leftPos} format="MMMM Do YYYY" />
                     })
                 }
             </div>
