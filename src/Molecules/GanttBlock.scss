@@ -51,6 +51,7 @@
      *  Description: makes gantt block draggable
      */
     &.gantt__block--editable {
+        overflow: visible;
         .gantt__block-content {
             width: calc(100% - 30px);
             &:active {
@@ -64,6 +65,7 @@
             border-radius: 15px;
             display: block;
             cursor: col-resize;
+            position: relative;
         }
     }
 }

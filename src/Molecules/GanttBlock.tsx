@@ -22,7 +22,7 @@ function GanttBlock(props: GanttBlockProps): JSX.Element
     if (props.isOverlay) {
         classArr.push('gantt__block--overlay');
     }
-    if (props.isEditable) {
+    if (props.isEditable && !props.isOverlay) {
         classArr.push('gantt__block--editable');
     }
     // inline styles
