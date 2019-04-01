@@ -72,7 +72,7 @@ export default function GanttMouseTouchEventHandler(): void
             || target.closest('.gantt__block')
             || target.closest('.gantt__row');
         setCursorTarget(newCursorTarget);
-        if (newCursorTarget.classList.contains('gantt__block-anchor')) {
+        if (newCursorTarget && newCursorTarget.classList.contains('gantt__block-anchor')) {
             const blockEl = newCursorTarget.closest('.gantt__block');
             const row = findByUuid(ganttState.rows, blockEl.closest('.gantt__row').getAttribute('uuid'));
             const block = findByUuid(row.blocks, blockEl.getAttribute('uuid'));
