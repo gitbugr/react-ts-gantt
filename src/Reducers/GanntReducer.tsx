@@ -23,7 +23,7 @@ export const defaultGanttState = {
     dateCursor: (new Date((new Date()).getTime() - (1000*60*60*2))), // now - 1hr
     pixelsPerMinute: 1.3,
     segment: 60,
-    snapToSecond: 60,
+    snapToSecond: 60 * 5,
     rows: [
         {
             uuid: rowUuid1,
