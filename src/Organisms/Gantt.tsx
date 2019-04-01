@@ -33,6 +33,7 @@ function Gantt(): JSX.Element
 
     return (
         <div className="gantt__container">
+            { ganttState.segment }
             <GanttTimeline />
             <GanttMarker date={currentTime} styles={{top: 50}} />
             {

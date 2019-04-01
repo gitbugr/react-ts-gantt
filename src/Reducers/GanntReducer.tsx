@@ -21,7 +21,7 @@ let rowUuid2 = uuidv4();
 // default gantt state
 export const defaultGanttState = {
     dateCursor: (new Date((new Date()).getTime() - (1000*60*60*2))), // now - 1hr
-    pixelsPerMinute: 1.3,
+    pixelsPerMinute: 1,
     segment: 60,
     snapToSecond: 60 * 10,
     rows: [
@@ -72,6 +72,7 @@ export const ganttReducer = (state: State, action: Action) => {
 
     let row;
     let block;
+    let newSegmentValue;
     switch(action.type) {
         case 'ADD_GANTT_ROW':
             newState.rows.push(action.value);
@@ -100,12 +101,20 @@ export const ganttReducer = (state: State, action: Action) => {
             delete newState.rows[row].blocks[block];
             break;
         case 'ZOOM_GANTT_IN':
-            newState.segment += 5;
-            newState.pixelsPerMinute += 12 / 78;
+            if (newState.segment > 5) {
+                do {
+                    newState.segment -= 5;
+                    newSegmentValue = 60 % newState.segment;
+                    newState.pixelsPerMinute = 60 / newState.segment;
+                } while (!isNaN(newSegmentValue) && newSegmentValue !== 0 && newState.segment > 5);
+            }
             break;
         case 'ZOOM_GANTT_OUT':
-            newState.segment -= 5;
-            newState.pixelsPerMinute -= 12 / 78;
+            do {
+                newState.segment += newState.segment >= 60 ? 0 : 5;
+                newSegmentValue = 60 % newState.segment;
+                newState.pixelsPerMinute = 60 / newState.segment;
+            } while (newSegmentValue !== 0 && newSegmentValue !== 60);
             break;
         default:
             throw new Error();
