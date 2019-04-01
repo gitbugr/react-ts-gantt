@@ -1,0 +1,17 @@
+.gantt__timeline-container {
+    position: relative;
+    width: 100%;
+    .gantt__timeline {
+        height: 50px;
+        overflow: hidden;
+        position: relative;
+        opacity: 0.4;
+        &.gantt__timeline--dates {
+            height: 50px;
+            font-weight: bold;
+            .gantt__timeline-time {
+                height: 50px;
+            }
+        }
+    }
+}

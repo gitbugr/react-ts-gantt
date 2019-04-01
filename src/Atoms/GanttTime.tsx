@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+// Styles
 import './GanttTime.scss';
 
 interface GanttTimeProps {

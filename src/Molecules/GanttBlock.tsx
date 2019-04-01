@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// Styles
 import './GanttBlock.scss';
 
 interface GanttBlockProps {

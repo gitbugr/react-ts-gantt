@@ -1,12 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 // Comonents
+import GanttMarker from '../Atoms/GanttMarker';
 import GanttRow from '../Molecules/GanttRow';
 import GanttBlock from '../Molecules/GanttBlock';
-import GanttTimeline from '../Molecules/GanttTimeline';
+import GanttTimeline from './GanttTimeline';
 // Gantt Context
 import { GanttContext } from '../Reducers/GanntReducer';
 // Event Listeners
 import GanttMouseTouchEventHandler from '../Events/GanttMouseTouchEventHandler';
+// Styles
+import './Gantt.scss';
 
 /**
  * Gantt
@@ -14,13 +17,24 @@ import GanttMouseTouchEventHandler from '../Events/GanttMouseTouchEventHandler';
  */
 function Gantt(): JSX.Element
 {
-    const { ganttState, ganttDispatch } = useContext(GanttContext);
+    const { ganttState } = useContext(GanttContext);
 
     GanttMouseTouchEventHandler();
 
+    const [currentTime, setCurrentTime] = useState(new Date());
+    useEffect(() => {
+        const currentTimeInterval = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+        return () => {
+            clearInterval(currentTimeInterval);
+        };
+    }, []);
+
     return (
-        <div>
+        <div className="gantt__container">
             <GanttTimeline />
+            <GanttMarker date={currentTime} styles={{top: 50}} />
             {
                 ganttState.rows.map((row, i) => {
                     return (

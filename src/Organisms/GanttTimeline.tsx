@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useContext, useState } from 'react';
 import { throttle } from 'throttle-debounce';
-
+// Contexts
 import { GanttContext } from '../Reducers/GanntReducer';
-
-import GanttTime from './GanttTime';
-
+// Components
+import GanttTime from '../Atoms/GanttTime';
+// Styles
 import './GanttTimeline.scss';
 
 type TimeAndPosition = {
@@ -14,7 +14,6 @@ type TimeAndPosition = {
 
 /**
  * GanttTimeline
- * @param {GanttTimelineProps} props
  * @returns {JSX.Element}
  */
 function GanttTimeline(): JSX.Element
@@ -81,7 +80,7 @@ function GanttTimeline(): JSX.Element
     }
 
     return (
-        <div>
+        <div className="gantt__timeline-container">
             <div ref={timelineEl} className="gantt__timeline gantt__timeline--dates">
                 {
                     filterGanttDates(timePositions).map(({date, leftPos}, i) => {
