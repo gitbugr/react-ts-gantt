@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './GanttRow.scss';
 
 interface GanttRowProps {
+    uuid: string;
     children: any;
 }
 
@@ -12,8 +13,14 @@ interface GanttRowProps {
  */
 function GanttRow(props: GanttRowProps): JSX.Element
 {
+    const rowEl = useRef(null);
+    const currentRow: any = rowEl.current;
+    if (currentRow) {
+        currentRow.setAttribute('uuid', props.uuid);
+    }
+
     return (
-        <div className="gantt__row">
+        <div ref={rowEl} className="gantt__row">
             { props.children }
         </div>
     );

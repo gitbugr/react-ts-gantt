@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { throttle } from 'throttle-debounce';
+import { findByUuid } from '../Utils/Arrays';
 import { GanttContext } from '../Reducers/GanntReducer';
 
 /**
@@ -11,7 +12,9 @@ export default function GanttMouseTouchEventHandler(): void
     const { ganttState, ganttDispatch } = useContext(GanttContext);
     // State
     const [ cursorTarget, setCursorTarget ] = useState(false as any);
+    const [ cursorTargetBlock, setCursorTargetBlock ] = useState(false as any);
     const [ dateAtMouseDown, setDateAtMouseDown ] = useState(ganttState.dateCursor);
+    const [ blockDateAtMouseDown, setBlockDateAtMouseDown ] = useState(false as any);
     const [ cursorPositionAtMouseDown, setCursorPositionAtMouseDown ] = useState({x: 0, y: 0});
 
     const getPositions = (event: any) => {
@@ -29,14 +32,29 @@ export default function GanttMouseTouchEventHandler(): void
         const {clientX, clientY} = getPositions(event);
         if (cursorTarget) {
             const classList = cursorTarget.classList;
+            let offsetInMs = cursorPositionAtMouseDown.x - clientX;
+                offsetInMs = offsetInMs / ganttState.pixelsPerMinute * 60 * 1000;
             if (classList.contains('gantt__row') || (classList.contains('gantt__block') && !classList.contains('gantt_block--editable'))) {
-                let offsetInMs = cursorPositionAtMouseDown.x - clientX;
-                    offsetInMs = offsetInMs / ganttState.pixelsPerMinute * 60 * 1000;
                 let newPosition = new Date(dateAtMouseDown.getTime());
                     newPosition.setTime(newPosition.getTime() + offsetInMs);
                 ganttDispatch({
                     type: 'UPDATE_GANTT_POSITION',
                     value: newPosition,
+                });
+            }
+            if (cursorTargetBlock && classList.contains('gantt__block-anchor')) {
+                const snapToMillisecond = ganttState.snapToSecond * 1000;
+                let newPosition = new Date(blockDateAtMouseDown.getTime());
+                newPosition.setTime(snapToMillisecond * Math.round((newPosition.getTime() - offsetInMs) / snapToMillisecond));
+                let newBlock = {...cursorTargetBlock};
+                if (classList.contains('gantt__block-anchor--left')) {
+                    newBlock.start = newPosition;
+                } else if (classList.contains('gantt__block-anchor--right')) {
+                    newBlock.end = newPosition;
+                }
+                ganttDispatch({
+                    type: 'UPDATE_GANTT_BLOCK',
+                    value: newBlock,
                 });
             }
         } else {
@@ -50,9 +68,21 @@ export default function GanttMouseTouchEventHandler(): void
         const {clientX, clientY} = getPositions(event);
         setCursorPositionAtMouseDown({x: clientX, y: clientY});
         setDateAtMouseDown(ganttState.dateCursor);
-        setCursorTarget(target.closest('.gantt__block-anchor')
+        const newCursorTarget = target.closest('.gantt__block-anchor')
             || target.closest('.gantt__block')
-            || target.closest('.gantt__row'));
+            || target.closest('.gantt__row');
+        setCursorTarget(newCursorTarget);
+        if (newCursorTarget.classList.contains('gantt__block-anchor')) {
+            const blockEl = newCursorTarget.closest('.gantt__block');
+            const row = findByUuid(ganttState.rows, blockEl.closest('.gantt__row').getAttribute('uuid'));
+            const block = findByUuid(row.blocks, blockEl.getAttribute('uuid'));
+            setCursorTargetBlock(block);
+            if (newCursorTarget.classList.contains('gantt__block-anchor--left')) {
+                setBlockDateAtMouseDown(block.start);
+            } else if (newCursorTarget.classList.contains('gantt__block-anchor--right')) {
+                setBlockDateAtMouseDown(block.end);
+            }
+        }
     };
 
     // handle mouse up
@@ -61,6 +91,7 @@ export default function GanttMouseTouchEventHandler(): void
         setDateAtMouseDown(ganttState.dateCursor);
         setCursorPositionAtMouseDown({x: clientX, y: clientY});
         setCursorTarget(false);
+        setCursorTargetBlock(false);
     };
 
     // initialise / teardown event listeners
@@ -81,5 +112,5 @@ export default function GanttMouseTouchEventHandler(): void
             document.removeEventListener('touchend', handleMouseUp);
             document.removeEventListener('touchcancel', handleMouseUp);
         };
-    }, [cursorTarget]);
+    }, [cursorTarget, cursorTargetBlock, blockDateAtMouseDown]);
 }

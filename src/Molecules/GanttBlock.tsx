@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 // Styles
 import './GanttBlock.scss';
 
 interface GanttBlockProps {
     text?: string;
+    uuid: string;
     left: number;
     width: number;
     isOverlay?: boolean;
@@ -26,6 +27,13 @@ function GanttBlock(props: GanttBlockProps): JSX.Element
     if (props.isEditable && !props.isOverlay) {
         classArr.push('gantt__block--editable');
     }
+
+    const blockEl = useRef(null);
+    const currentBlock: any = blockEl.current;
+    if (currentBlock) {
+        currentBlock.setAttribute('uuid', props.uuid);
+    }
+
     // inline styles
     const style = {
         left: props.left,
@@ -33,7 +41,7 @@ function GanttBlock(props: GanttBlockProps): JSX.Element
     };
 
     return (
-        <div className={classArr.join(' ')} style={style}>
+        <div ref={blockEl} className={classArr.join(' ')} style={style}>
             <div className="gantt__block-anchor gantt__block-anchor--left"></div>
             <div className="gantt__block-content">
                 { props.text }

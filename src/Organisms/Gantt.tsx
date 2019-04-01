@@ -25,7 +25,7 @@ function Gantt(): JSX.Element
     useEffect(() => {
         const currentTimeInterval = setInterval(() => {
             setCurrentTime(new Date());
-        }, 1000);
+        }, 5000);
         return () => {
             clearInterval(currentTimeInterval);
         };
@@ -38,13 +38,13 @@ function Gantt(): JSX.Element
             {
                 ganttState.rows.map((row, i) => {
                     return (
-                        <GanttRow key={i}>
+                        <GanttRow key={i} uuid={row.uuid}>
                             {
                                 row.blocks.map((block, j) => {
                                     const left = (block.start.getTime() - ganttState.dateCursor.getTime()) / 1000 / 60 * ganttState.pixelsPerMinute;
                                     const width = (block.end.getTime() - block.start.getTime()) / 1000 / 60 * ganttState.pixelsPerMinute;
                                     return (
-                                        <GanttBlock key={j} left={left} width={width} text={block.text} isEditable={true} isOverlay={block.overlay}/>
+                                        <GanttBlock key={j} left={left} width={width} text={block.text} isEditable={true} isOverlay={block.overlay} uuid={block.uuid}/>
                                     );
                                 })
                             }
