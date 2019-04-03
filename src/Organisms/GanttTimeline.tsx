@@ -84,14 +84,14 @@ function GanttTimeline(): JSX.Element
             <div ref={timelineEl} className="gantt__timeline gantt__timeline--dates">
                 {
                     filterGanttDates(timePositions).map(({date, leftPos}, i) => {
-                        return <GanttTime key={i} date={date} leftPos={leftPos} format="MMMM Do YYYY" />
+                        return <GanttTime key={date.getTime()} date={date} leftPos={leftPos} format="MMMM Do YYYY" />
                     })
                 }
             </div>
             <div ref={timelineEl} className="gantt__timeline">
                 {
                     timePositions.map(({date, leftPos}, i) => {
-                        return <GanttTime key={i} date={date} leftPos={leftPos} />
+                        return <GanttTime key={date.getTime()} date={date} leftPos={leftPos} />
                     })
                 }
             </div>

@@ -9,6 +9,7 @@ type State = {
     segment: number;
     snapToSecond: number;
     rows: Gantt.Row[];
+    animated: boolean;
 }
 
 type Action = {
@@ -24,6 +25,7 @@ export const defaultGanttState = {
     pixelsPerMinute: 1,
     segment: 60,
     snapToSecond: 60 * 10,
+    animated: true,
     rows: [
         {
             uuid: rowUuid1,
@@ -115,6 +117,9 @@ export const ganttReducer = (state: State, action: Action) => {
                 newSegmentValue = 60 % newState.segment;
                 newState.pixelsPerMinute = 60 / newState.segment;
             } while (newSegmentValue !== 0 && newSegmentValue !== 60);
+            break;
+        case 'UPDATE_GANTT_ANIMATED':
+            newState.animated = action.value;
             break;
         default:
             throw new Error();

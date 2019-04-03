@@ -9,6 +9,9 @@
     user-select: none;
     justify-content: center;
     position: absolute;
+    //animation-name: fade-in;
+    //animation-duration: 0.5s;
+    //animation-iteration-count: 1;
     &::after {
         content: '';
         position: absolute;
@@ -16,5 +19,9 @@
         height: 5px;
         width: 1px;
         background: black;
+    }
+    @keyframes fade-in {
+        0%   {opacity: 0;}
+        100% {opacity: 1;}
     }
 }

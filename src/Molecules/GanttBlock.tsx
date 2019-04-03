@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import { GanttContext } from '../Reducers/GanntReducer';
 // Styles
 import './GanttBlock.scss';
 
@@ -6,7 +7,7 @@ interface GanttBlockProps {
     text?: string;
     uuid: string;
     left: number;
-    width: number;
+    right: number|string;
     isOverlay?: boolean;
     isEditable?: boolean;
 }
@@ -33,11 +34,14 @@ function GanttBlock(props: GanttBlockProps): JSX.Element
     if (currentBlock) {
         currentBlock.setAttribute('uuid', props.uuid);
     }
+    const { ganttState } = useContext(GanttContext);
+    const isAnimated = ganttState.animated ? { transition : 'all 0.25s'} : {};
 
     // inline styles
     const style = {
         left: props.left,
-        width: props.width,
+        right: props.right,
+        ...isAnimated,
     };
 
     return (

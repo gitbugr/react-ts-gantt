@@ -43,9 +43,9 @@ function Gantt(): JSX.Element
                             {
                                 row.blocks.map((block, j) => {
                                     const left = (block.start.getTime() - ganttState.dateCursor.getTime()) / 1000 / 60 * ganttState.pixelsPerMinute;
-                                    const width = (block.end.getTime() - block.start.getTime()) / 1000 / 60 * ganttState.pixelsPerMinute;
+                                    const right = `calc(100% - ${(block.end.getTime() - ganttState.dateCursor.getTime()) / 1000 / 60 * ganttState.pixelsPerMinute}px)`;
                                     return (
-                                        <GanttBlock key={j} left={left} width={width} text={block.text} isEditable={true} isOverlay={block.overlay} uuid={block.uuid}/>
+                                        <GanttBlock key={j} left={left} right={right} text={block.text} isEditable={true} isOverlay={block.overlay} uuid={block.uuid}/>
                                     );
                                 })
                             }

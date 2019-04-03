@@ -68,6 +68,10 @@ export default function GanttMouseTouchEventHandler(): void
         const {clientX, clientY} = getPositions(event);
         setCursorPositionAtMouseDown({x: clientX, y: clientY});
         setDateAtMouseDown(ganttState.dateCursor);
+        ganttDispatch({
+            type: 'UPDATE_GANTT_ANIMATED',
+            value: false,
+        });
         const newCursorTarget = target.closest('.gantt__block-anchor')
             || target.closest('.gantt__block')
             || target.closest('.gantt__row');
@@ -92,6 +96,10 @@ export default function GanttMouseTouchEventHandler(): void
         setCursorPositionAtMouseDown({x: clientX, y: clientY});
         setCursorTarget(false);
         setCursorTargetBlock(false);
+        ganttDispatch({
+            type: 'UPDATE_GANTT_ANIMATED',
+            value: true,
+        });
     };
 
     // initialise / teardown event listeners
