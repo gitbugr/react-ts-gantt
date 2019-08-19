@@ -1,3 +1,3 @@
-# React (typescript) Gantt Chart
+# React (typescript) Gantt Chart
 
 - todo readme. -
